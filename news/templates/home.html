@@ -6,19 +6,15 @@
 {% endblock %}
 
 {% block content %}
-  <header class="header">
-    <ul class="header-links">
-      <li>
-        <a href="{% url 'home-page' %}">Home</a>
-      </li>
-    </ul>
-  </header>
   {% for new in news %}
     <div>
-      <h2 class="news-title">{{new.title}}</h2>
-      <span class="news-date">{{new.created_at|date:"d/m/Y"}}</span>
-      <img  src="{% static new.image.url %}" alt="news-image" width="30"/> 
-      <!-- quando e imagem tem que colocar ".url" no final -->
+      <a href="{% url 'news-details-page' new.id %}">
+        <h2 class="news-title">{{new.title}}</h2>
+        <span class="news-date">{{new.created_at|date:"d/m/Y"}}</span>
+        <hr />
+        <img  src="{% static new.image.url %}" alt="news-image" width="100"/> 
+        <!-- quando e imagem tem que colocar ".url" no final -->
+      </a>
     </div>
   {% endfor %}
 

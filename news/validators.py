@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from datetime import datetime
 
 
 def validate_composite_title(value):
@@ -7,8 +8,9 @@ def validate_composite_title(value):
         raise ValidationError('O título deve conter pelo menos 2 palavras.')
 
 
-# def validate_date_format(value):
-#     if not value or len(value) != 10 or not value[4] == value[7] == '-':
-#         raise ValidationError("A data deve estar no formato AAAA-MM-DD.")
-
+def validate_date_format(value):
+    try:
+        datetime.strptime(str(value), "%Y-%m-%d")
+    except ValueError:
+        raise ValidationError(f'O valor {value} tem um formato de data inválido. Deve ser no formato YYYY-MM-DD.')
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from news.models import News, Categories
-from news.forms import CreateCategoriesForm
+from news.models import News
+from news.forms import CreateCategoriesForm, CreateNewsForm
 
 
 def home(request):
@@ -24,3 +24,14 @@ def categories(request):
 
     context = {"form_categories": form }
     return render(request, "categories_form.html", context)
+
+
+def news(request):
+    form = CreateNewsForm()
+    if request.method == 'POST':
+        form_post = CreateNewsForm(request.POST, request.FILES) # no recebimento de arquivo colocar segundo parametro
+        if form_post.is_valid():
+            form_post.save()
+            return redirect("home-page")
+    context = {"form_news": form }
+    return render(request, "news_form.html", context)

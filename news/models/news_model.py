@@ -12,7 +12,7 @@ class News(models.Model):
     content = models.TextField(null=False)
     author = models.ForeignKey(Users, null=False, on_delete=models.CASCADE)
     created_at = models.DateField(validators=[validate_date_format], null=False)
-    image = models.ImageField(upload_to="news/static/img/", null=False, blank=True)
+    image = models.ImageField(upload_to="img/", null=False, blank=True)
     categories = models.ManyToManyField(Categories)
 
     def __str__(self):

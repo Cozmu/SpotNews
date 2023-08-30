@@ -13,6 +13,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import sys
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config( # configurações para rodar imagens no server
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,14 +31,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-#w%dqt6v!2#uts4b1zms_)*cx!dld2qg7p9=m83j5@am=s(9$4"
-)
+
+# SECRET_KEY = (
+#     "django-insecure-#w%dqt6v!2#uts4b1zms_)*cx!dld2qg7p9=m83j5@am=s(9$4"
+# )
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'change-me') # configuração necessaria para deploy
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+# DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 0))) # configuração necessaria para deploy
+
+ALLOWED_HOSTS = [ # configuração necessaria para deploy
+    os.environ.get("RAILWAY_STATIC_URL", ""),
+    ".localhost",
+    "127.0.0.1",
+    "[::1]",
+]
+
+CSRF_TRUSTED_ORIGINS = ["https://" + os.environ.get("RAILWAY_STATIC_URL", "")] # configuração necessaria para deploy
 
 
 # Application definition
@@ -85,11 +105,11 @@ WSGI_APPLICATION = "spotnews.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "spotnews_database",
-        "USER": os.getenv("DB_USER", "root"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "password"),
-        "HOST": os.getenv("MYSQL_HOST", "127.0.0.1"),
-        "PORT": "3306",
+        "NAME": os.environ.get('MYSQLDATABASE'), # "spotnews_database"
+        "USER": os.environ.get('MYSQLUSER'), # os.getenv("DB_USER", "root")
+        "PASSWORD": os.environ.get('MYSQLPASSWORD'), # os.getenv("DB_PASSWORD", "password")
+        'HOST': os.environ.get('MYSQLHOST'), #'db_service'
+        "PORT":  os.environ.get('MYSQLPORT'), # "3306"
     }
 }
 

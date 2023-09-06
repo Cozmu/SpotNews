@@ -13,10 +13,7 @@
         <span class="news-date">{{new.created_at|date:"d/m/Y"}}</span>
         <hr />
         <img  src="{% static new.image.url %}" alt="news-image" width="100"/> 
-        <!-- quando e imagem tem que colocar ".url" no final -->]
-
-        <!-- <img  src="{{ new.image.url }}" alt="news-image" width="100"/>  -->
-        <!-- nao precisa do static quando e do cloudinary -->
+        <!-- quando e imagem tem que colocar ".url" no final -->
       </a>
     </div>
   {% endfor %}

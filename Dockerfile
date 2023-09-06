@@ -1,17 +1,4 @@
-FROM python:3.10-slim
+FROM mysql:8.0.32
 
-ENV PYTHONUNBUFFERED=1
-
-WORKDIR /app
-
-RUN apt update \
-    && apt install -y python3-dev netcat-openbsd default-libmysqlclient-dev build-essential pkg-config \
-    && pip install --upgrade pip
-
-COPY ./requirements.txt ./
-
-RUN pip install -r requirements.txt
-
-COPY ./ ./
-
-CMD ["sh", "entrypoint.sh"]
+ENV MYSQL_ROOT_PASSWORD password
+COPY ./database/01_create_database.sql /docker-entrypoint-initdb.d/data.sql01
